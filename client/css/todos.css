@@ -1,0 +1,202 @@
+
+body {
+  line-height: 1; 
+  font-family: "Lucida Grande", sans-serif;
+  font-size: 20px; 
+}
+
+ol, ul {
+  list-style: none; 
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; 
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle; 
+}
+
+a img {
+  border: none; 
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; 
+}
+
+/* App CSS */
+body, html {
+  color: #777;
+  background-color: #F2F4F5; }
+
+.sc-view {
+  position: relative;
+  overflow: visible; }
+
+body #sidebar {
+  margin-top: 80px;
+}
+
+body #stats {
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 10px;
+  margin: 10px -10px;
+  background-color: #eee;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+  line-height: 25px; 
+}  
+
+body #stats .remaining {
+    float: left; 
+}
+
+body #stats .sc-button {
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #f9f9f9), color-stop(34%, #dddddd), color-stop(67%, #f2f2f2), color-stop(100%, #f7f7f7));
+    background-image: -webkit-linear-gradient(#f9f9f9 1%, #dddddd, #f2f2f2, #f7f7f7);
+    background-image: -moz-linear-gradient(#f9f9f9 1%, #dddddd, #f2f2f2, #f7f7f7);
+    background-image: -o-linear-gradient(#f9f9f9 1%, #dddddd, #f2f2f2, #f7f7f7);
+    background-image: linear-gradient(#f9f9f9 1%, #dddddd, #f2f2f2, #f7f7f7);
+    border: 1px solid #828282;
+    color: #000;
+    float: right;
+    padding: 5px; 
+}
+
+body #stats .sc-button:hover {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #ffffff), color-stop(34%, #e2e2e2), color-stop(67%, #f7f7f7), color-stop(100%, #fcfcfc));
+  background-image: -webkit-linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
+  background-image: -moz-linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
+  background-image: -o-linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
+  background-image: linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc); 
+}
+
+body #stats .sc-button.is-active {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #efefef), color-stop(34%, #d3d3d3), color-stop(67%, #e8e8e8), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(#efefef 1%, #d3d3d3, #e8e8e8, #ededed);
+  background-image: -moz-linear-gradient(#efefef 1%, #d3d3d3, #e8e8e8, #ededed);
+  background-image: -o-linear-gradient(#efefef 1%, #d3d3d3, #e8e8e8, #ededed);
+  background-image: linear-gradient(#efefef 1%, #d3d3d3, #e8e8e8, #ededed); 
+}
+
+body .patientinfo input[type='text'] {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.6);
+  -o-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.6);
+  color: #999;
+  background-color: #f0f0f0;
+  width: 588px;
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
+  padding: 5px;
+  border: 1px solid #bbbbbb;
+  font-weight: 500; 
+}
+
+body input[type='text']::-webkit-input-placeholder {
+  color: #aaa; 
+}
+
+body .sc-checkbox input[type="checkbox"] {
+  margin-right: 7px; 
+}
+
+body .mark-all label {
+  margin-left: 10px;
+  font-weight: bold; 
+}
+
+body .patientinfo {
+  margin-top: 10px;
+  float: left;
+  margin-left: 10%;
+}
+
+body .patientprescription {
+  margin-top: 40px;
+  margin-left: 20px;
+  float:center;
+}
+
+body .patientprescription ul {
+  list-style-type: none;
+  margin: 10px 0 2px 0; 
+  width: 100%;
+  text-align: left;
+  filter: none;
+}
+
+body .patientprescription ul li {
+  vertical-align: middle;
+  height: 10px;
+  list-style-type: none;
+  margin: 5px;
+  padding: 5px;
+  text-align: left;
+  filter: none;
+}
+
+body .isDone {
+  list-style-type: none;
+  text-align: left;
+}
+
+/* ember text is label */
+body label {
+  display: inline-block;
+  height: 10px;
+  width: 600px;
+  margin: 5px;
+  padding: 5px;
+  text-align: left;
+}
+
+body .patientprescription ul li.is-done {
+  color: #B7B7B7;
+  text-decoration: line-through; 
+}
+
+body .patientprescription ul {
+  list-style-type: none;
+  margin: 10px;
+  padding:10px;
+  text-align: left;
+}
+
+body .patientprescription ul li:nth-child(odd) {
+  background-color: #F7F7F7;
+}
+
+body .checkprescription{
+  /*position:absolute;*/
+  float: right;
+  /*margin: 5px;*/
+  /*right:10px;*/
+}
+
+label > input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.ember-view {
+  position: relative;
+  overflow: visible;
+}
+
+.ember-button {
+  padding: 8px;
+  margin: 5px 5px 5px 0;
+}

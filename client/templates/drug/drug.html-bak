@@ -1,0 +1,25 @@
+
+<!-- Handlebars uses {{}} for insertion and {{#list people}} {{name}} {{/list}} for widgets and control structures. -->
+
+<!-- Drugs is an Ember.Application, view is Em.View.extend() -->
+{{view Drugs.CreateDrugsView id="new-drug" placeholder="What medicine needed ?"}}
+
+
+<!-- Insert this after the CreateTodoView and before the collection. -->
+{{#view Drugs.StatsView id="stats"}}
+  {{#view Em.Button classBinding="isActive"
+    target="Drugs.drugsController"
+    action="clear lDrugs"}}
+    Remove Selected Drugs
+  {{/view}}
+  {{remainingString}} medicines total
+{{/view}}
+
+{{view Em.Checkbox class="mark-all"
+  title="Mark All"
+  valueBinding="Drugs.drugsController.allDeleted"}}
+
+{{#collection contentBinding="Drugs.drugsController" tagName="ul" itemClassBinding="content.isDone"}}
+  {{view Em.Checkbox titleBinding="content.title"
+  valueBinding="content.isDone"}}
+{{/collection}}

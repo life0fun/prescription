@@ -1,0 +1,89 @@
+!!! 5
+html(lang="en")
+  head
+    meta(name="viewport", content="initial-scale=1.0, user-scalable=no")
+    meta(http-equiv="content-type", content="text/html, charset=UTF-8")
+    meta(Access-Control-Allow-Origin="*")
+    // ss-jade does not know to handle this SocketStream tag. Jade knows. 
+    SocketStream
+    title Prescription Error Detection
+    link(rel="stylesheet",href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css")
+    link(rel="stylesheet", href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css",type="text/css")
+
+    <script src="http://maps.google.com/maps/api/js?sensor=false", type="text/javascript"></script>
+  body(id="index", style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 40px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;")
+    div.topbar
+      div.topbar-inner
+        div.container
+          a.brand(href='#') Find Droid Users
+          ul.nav
+            li.active
+              a(href='#') Overview
+            li
+              a(href='#') Home
+            li
+              a(href='#') About
+          form#searchbox
+            input(type='text', placeholder='Search by Address')
+          ul.dropdown
+            li(class='dropdown', data-dropdown='dropdown')
+              a(href='#',class='dropdown-toggle') Location Category
+              ul.dropdown-menu
+                li
+                  a(href='#') Office
+                li
+                  a(href='#') Home
+                li.divider
+                li
+                  a(href='#') Gym 
+                li
+                  a(href='#') Food 
+    #container.container-fluid
+      #sidebar.sidebar
+        p
+        p
+        p Time Range
+        form#timerange
+          div.inline-inputs
+            input(name='sdate',type='text', class='mini', value='2011-6-5')
+            input(name='shour',type='text', class='mini',  value='18')
+
+            p
+            p to 
+            input(name='edate', type='text', class='mini', value='2011-6-7')
+            input(name='ehour', type='text', class='mini',  value='20')
+
+          span.help-block 24 hour format
+
+          br
+          p Duration
+          div.inline-inputs
+            input(name='duration', type='text', class='mini',  value='30')
+          span.help-block duration in minutes
+
+          br
+          input(type='submit', class='btn small primary', value='Search')
+        br
+        p Example: 
+        p 1. who stuck at airport for hours ?
+        p 2. who leaves office late everyday ?
+        
+      #map_canvas.content
+      
+        script(type='text/x-handlebars-template', id='drugs-template')
+          {{view Drugs.CreateDrugsView id="new-drug" placeholder="What medicine needed ?"}}
+
+          {{#view Drugs.StatsView id="stats"}}
+            {{#view Em.Button classBinding="isActive" target="Drugs.drugsController" action="clear lDrugs"}}
+              Remove Selected Drugs
+            {{/view}}
+            {{remainingString}} medicines total
+          {{/view}}
+
+          {{view Em.Checkbox class="mark-all" title="Mark All" valueBinding="Drugs.drugsController.allDeleted"}}
+
+          {{#collection contentBinding="Drugs.drugsController" tagName="ul" itemClassBinding="content.isDone"}}
+            {{view Em.Checkbox titleBinding="content.title" valueBinding="content.isDone"}}
+          {{/collection}}
+
+
