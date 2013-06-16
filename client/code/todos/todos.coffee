@@ -2,6 +2,9 @@
 # main client app code
 #
 
+# global data store
+window.errors = []      # all errors from server stored here
+
 #
 # first, render handlerbar template
 #
@@ -42,6 +45,10 @@ todoCtrlImpl =
         else
             return !!this.get('length') and this.everyProperty('isDone', true)
     ).property('@each.isDone')
+
+    # awesome coffescript list comprehension
+    getObjects : ->
+        p.title for p in this.content when p.isDone isnt true
 
 Todos.todosController = Em.ArrayController.create todoCtrlImpl
     
@@ -92,13 +99,71 @@ bindDOMViewEvent = ->
 
     console.log 'done bindDOMViewEvent..'
 
+# bind server push/bcast event thru socketstream session/channel
+ss.event.on 'locpoint', (data) ->
+    loc = JSON.parse(data)
+    console.log 'locpoint :', loc
 
 dumpPrescription = (item, idx, enums) ->
     console.log item.title, idx
 
 handleSearchSubmit = ->
-    console.log 'handling submit check'
+    # check submit btn handler, ss.rpc call to server
     Todos.todosController.forEach dumpPrescription, this
+    args = Todos.todosController.getObjects()
+    console.log 'handling submit check :', args
+    ss.rpc 'prescription.check.checkError', args, (result) ->
+        console.log 'check prescription result: ', result
+        setCheckResult result
+
+setCheckResult = (err) ->
+    # get check error result back, display it on the screen
+    itemcontainer = document.createElement("div")
+    itemcontainer.id = "error"
+    
+    errors = err.slice()        # make a copy
+    if errors.length > 10
+        errors.pop()
+
+    console.log 'setCheckResult :', errors
+    smoothAdd('errors', errors)
+
+smoothAdd = (id, text) ->
+    el = $('#' + id)
+    h = el.height()
+    
+    console.log 'smoothAdd :', id, text, el, h
+    # el.css
+    #     height:   h,
+    #     overflow: 'hidden'
+ 
+    ulPaddingTop    = parseInt(el.css('padding-top'));
+    ulPaddingBottom = parseInt(el.css('padding-bottom'));
+ 
+    first = $('li:first', el);
+    last  = $('li:last',  el);
+    foh = first.outerHeight();
+    heightDiff = foh - last.outerHeight();
+    oldMarginTop = first.css('margin-top');
+ 
+    first.css
+        marginTop: 0 - foh,
+        position:  'relative',
+        top:       0 - ulPaddingTop
+ 
+    last.css('position', 'relative');
+ 
+    el.prepend('<li>' + text + '</li>');
+    el.animate({ height: h + heightDiff }, 1500)
+ 
+
+    first.animate { top: 0 }, 25, ->
+        first.animate { marginTop: oldMarginTop }, 100, ->
+            last.animate { top: ulPaddingBottom }, 250, ->
+                last.remove();
+                el.css
+                    height:   'auto',
+                    overflow: 'visible'
 
 ##--------------------------------
 #  put the init function at the bottom
