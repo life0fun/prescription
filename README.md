@@ -25,3 +25,4 @@ launch brower to localhost:3000
 ## Dependencies
 
 We are using socketstream as the platform. We use Ember.js for MVC and handlerbar for templating.
+

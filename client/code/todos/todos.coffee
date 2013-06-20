@@ -113,8 +113,8 @@ handleSearchSubmit = ->
     args = Todos.todosController.getObjects()
     console.log 'handling submit check :', args
     ss.rpc 'prescription.check.checkError', args, (result) ->
-        console.log 'check prescription result: ', result
-        setCheckResult result
+       console.log 'check prescription result: ', result
+       setCheckResult result
 
 setCheckResult = (err) ->
     # get check error result back, display it on the screen
@@ -129,41 +129,47 @@ setCheckResult = (err) ->
     smoothAdd('errors', errors)
 
 smoothAdd = (id, text) ->
+    #$("#notes").hide()
+    $("#errors").css({display: "inline-block"})
+    $("#errortext").append(text)
+    $("#errortext").append("* Please redo prescription\n")
+    $("#errortext").css({color: "red"})
+
     el = $('#' + id)
     h = el.height()
     
-    console.log 'smoothAdd :', id, text, el, h
-    # el.css
-    #     height:   h,
-    #     overflow: 'hidden'
+    # console.log 'smoothAdd :', id, text, el, h
+    # # el.css
+    # #     height:   h,
+    # #     overflow: 'hidden'
  
-    ulPaddingTop    = parseInt(el.css('padding-top'));
-    ulPaddingBottom = parseInt(el.css('padding-bottom'));
+    # ulPaddingTop    = parseInt(el.css('padding-top'));
+    # ulPaddingBottom = parseInt(el.css('padding-bottom'));
  
-    first = $('li:first', el);
-    last  = $('li:last',  el);
-    foh = first.outerHeight();
-    heightDiff = foh - last.outerHeight();
-    oldMarginTop = first.css('margin-top');
+    # first = $('li:first', el);
+    # last  = $('li:last',  el);
+    # foh = first.outerHeight();
+    # heightDiff = foh - last.outerHeight();
+    # oldMarginTop = first.css('margin-top');
  
-    first.css
-        marginTop: 0 - foh,
-        position:  'relative',
-        top:       0 - ulPaddingTop
+    # first.css
+    #     marginTop: 0 - foh,
+    #     position:  'relative',
+    #     top:       0 - ulPaddingTop
  
-    last.css('position', 'relative');
+    # last.css('position', 'relative');
  
-    el.prepend('<li>' + text + '</li>');
-    el.animate({ height: h + heightDiff }, 1500)
+    # el.prepend('<li>' + text + '</li>');
+    # el.animate({ height: h + heightDiff }, 1500)
  
 
-    first.animate { top: 0 }, 25, ->
-        first.animate { marginTop: oldMarginTop }, 100, ->
-            last.animate { top: ulPaddingBottom }, 250, ->
-                last.remove();
-                el.css
-                    height:   'auto',
-                    overflow: 'visible'
+    # first.animate { top: 0 }, 25, ->
+    #     first.animate { marginTop: oldMarginTop }, 100, ->
+    #         last.animate { top: ulPaddingBottom }, 250, ->
+    #             last.remove();
+    #             el.css
+    #                 height:   'auto',
+    #                 overflow: 'visible'
 
 ##--------------------------------
 #  put the init function at the bottom

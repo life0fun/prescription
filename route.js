@@ -17,7 +17,7 @@ var url = require('url')
 // other type of init returns a closure{}
 //
 exports.init = function(ss) {
-    api = require('api').init(ss);
+    api = require('./api').init(ss);
 
     // connect app == ss.http.middleware
     ss.http.middleware.prepend(ss.http.connect.bodyParser())
