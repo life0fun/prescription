@@ -126,50 +126,20 @@ setCheckResult = (err) ->
         errors.pop()
 
     console.log 'setCheckResult :', errors
-    smoothAdd('errors', errors)
+    appendItems('errortext', errors)
 
-smoothAdd = (id, text) ->
+appendItems = (id, items) ->
     #$("#notes").hide()
-    $("#errors").css({display: "inline-block"})
-    $("#errortext").append(text)
-    $("#errortext").append("* Please redo prescription\n")
-    $("#errortext").css({color: "red"})
+    listitems = []
+    for item in items
+        listitems.push '<li>' + item + '</li>'
 
-    el = $('#' + id)
-    h = el.height()
-    
-    # console.log 'smoothAdd :', id, text, el, h
-    # # el.css
-    # #     height:   h,
-    # #     overflow: 'hidden'
- 
-    # ulPaddingTop    = parseInt(el.css('padding-top'));
-    # ulPaddingBottom = parseInt(el.css('padding-bottom'));
- 
-    # first = $('li:first', el);
-    # last  = $('li:last',  el);
-    # foh = first.outerHeight();
-    # heightDiff = foh - last.outerHeight();
-    # oldMarginTop = first.css('margin-top');
- 
-    # first.css
-    #     marginTop: 0 - foh,
-    #     position:  'relative',
-    #     top:       0 - ulPaddingTop
- 
-    # last.css('position', 'relative');
- 
-    # el.prepend('<li>' + text + '</li>');
-    # el.animate({ height: h + heightDiff }, 1500)
- 
+    listitems.push '<li>' + ' Please be careful ! ' + '</li>'
 
-    # first.animate { top: 0 }, 25, ->
-    #     first.animate { marginTop: oldMarginTop }, 100, ->
-    #         last.animate { top: ulPaddingBottom }, 250, ->
-    #             last.remove();
-    #             el.css
-    #                 height:   'auto',
-    #                 overflow: 'visible'
+    $("#errortext").css({display: "inline-block"})
+    $("#errorlist").empty()
+    $("#errorlist").append(listitems.join(''))
+    $("#errorlist").css({color: "red"})
 
 ##--------------------------------
 #  put the init function at the bottom

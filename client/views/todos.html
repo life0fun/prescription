@@ -43,12 +43,26 @@
     <div id="sidebar" class="sidebar nav nav-list span4">
       <p></p><p></p>
       <p>Time Range</p>
-      <form id="timerange"><div class="inline-inputs">
+      <!-- <div class="inline-inputs"> -->
+      <form id="timerange">
         <input name="sdate" type="text" value="2011-6-5" class="mini">
         <input name="shour" type="text" value="18" class="mini"><p></p><p>to </p>
         <input name="edate" type="text" value="2011-6-7" class="mini">
-        <input name="ehour" type="text" value="20" class="mini"></div>
+        <input name="ehour" type="text" value="20" class="mini">
       </form>
+      <!-- </div> -->
+      <!-- <span class="btn btn-file"><input type="file" /></span> -->
+      <!-- <form id="upload">
+        <input name="upload" type="file" value="20" class="mini">
+      </form> -->
+      <div style="position:relative;">
+        <a class='btn' href='javascript:;'>
+          Upload
+          <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="20"  onchange='$("#upload-file-info").html($(this).val());'>
+        </a>
+        &nbsp;
+        <span class='label label-info' id="upload-file-info"></span>
+      </div>
     </div>
 
     <div id="patient-info" class="patientinfo">
@@ -104,9 +118,11 @@
         <textarea rows="5" margin-left:5em></textarea>
       </div>
       
-      <div id="errors" class="errors">
+      <div id="errortext" class="errors">
         <strong>Errors</strong> &emsp;&thinsp;
-        <textarea id="errortext" rows="3"></textarea>
+        <ul id="errorlist">
+        </ul>
+        <!-- <textarea id="errortext" rows="3"></textarea> -->
       </div>
 
       <div class="checkprescription">
@@ -114,9 +130,6 @@
           <input type="submit" value="Check" class="btn medium primary">
         </form>
       </div>
-
-      <div id="errors" class="errors">
-      </div>
-    
     </div>
-</div></body></html>
+</div>
+</body></html>

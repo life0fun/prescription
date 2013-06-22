@@ -6,7 +6,10 @@
 body {
   line-height: 1; 
   font-family: "Lucida Grande", sans-serif;
-  font-size: 20px; 
+  font-size: 20px;
+  color: #777;
+  background-color: #F2F4F5;
+  overflow:scroll;
 }
 
 ol, ul {
@@ -33,21 +36,16 @@ footer, header, hgroup, menu, nav, section {
   display: block; 
 }
 
-/* App CSS */
-body, html {
-  color: #777;
-  background-color: #F2F4F5; }
-
 .sc-view {
   position: relative;
-  overflow: visible; }
+  overflow: visible; 
+}
 
 body #sidebar {
   margin-top: 80px;
 }
 
 body #stats {
-  overflow: hidden;
   width: 100%;
   padding: 5px 10px;
   margin: 10px -10px;
@@ -146,7 +144,7 @@ body .patientinfo {
   margin-top: 10px;
   float: left;
   margin-left: 10%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 body .patientprescription {
@@ -196,6 +194,7 @@ body textarea {
   border: 3px solid #ccc;
 }
 
+
 body .checkprescription {
   /*position:absolute;*/
   float: right;
@@ -217,8 +216,16 @@ body .errors {
   color: red;
   /*visibility: hidden;*/
   display: none;
+  overflow: auto;
 }
 
+body #errorlist li {
+  margin-left: 40px;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  color: red;
+}
 
 .ember-view {
   position: relative;
