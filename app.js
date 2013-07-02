@@ -1,4 +1,4 @@
-// My SocketStream 0.3 app
+#!/usr/bin/env node
 
 var http = require('http'),
     ss = require('socketstream');

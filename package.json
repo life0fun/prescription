@@ -10,7 +10,8 @@
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
     "ss-coffee": "0.1.x",
-    "ss-jade": "0.1.x"
+    "ss-jade": "0.1.x",
+    "csv": "0.2.x"
   },
   "scripts":{
     "start":"node app.js"

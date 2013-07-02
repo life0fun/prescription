@@ -1,0 +1,2 @@
+"Input Document","error (SPAN)","patient (SPAN)","diseaselimitation (SPAN)"
+"\testdata\drugtest.txt","Patient has hyperlipidemia Fredrickson types I and V [209 - 261]","Patient [209 - 216]","hyperlipidemia Fredrickson types I and V [221 - 261]"

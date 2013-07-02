@@ -1,0 +1,4 @@
+"Input Document","error (SPAN)","drug (SPAN)","contraindication (SPAN)"
+"\testdata\drugtest.txt","Zocor should be taken with Ketoconazole [43 - 82]","Zocor [43 - 48]","Ketoconazole [70 - 82]"
+"\testdata\drugtest.txt","Simvastatin can be taken with grapefruit Juice [86 - 132]","Simvastatin [86 - 97]","grapefruit Juice [116 - 132]"
+"\testdata\drugtest.txt","Zocor can be taken with strong CYP3A inhibitors [136 - 183]","Zocor [136 - 141]","strong CYP3A inhibitors [160 - 183]"

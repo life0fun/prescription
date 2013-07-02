@@ -140,6 +140,7 @@ appendItems = (id, items) ->
     $("#errorlist").empty()
     $("#errorlist").append(listitems.join(''))
     $("#errorlist").css({color: "red"})
+    
 
 ##--------------------------------
 #  put the init function at the bottom
