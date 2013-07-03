@@ -38,6 +38,6 @@ exports.actions = (req, res, ss) ->
     console.log 'prescription check:', args
     sock = req.socketId
     errorDB.getError (err) =>
-      res ["error", "warning", "efefe", "eiofe ", "ce fefe"]
-      #res err
+      #res ["error", "warning", "efefe", "eiofe ", "ce fefe"]
+      res err
   

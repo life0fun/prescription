@@ -16,7 +16,9 @@ path = require 'path'
 class ErrorDB
     # class private static variable refed by name directly
     M = undefined
-    drugfile = __dirname + '/../../../data/DrugIsTakenWithContraindication.csv'
+    drugfiles = [ __dirname + '/../../../data/DrugIsTakenWithContraindication.csv', 
+                __dirname + '/../../../data/PatientHasDiseaselimitation.csv',
+                __dirname + '/../../../data/PatientHasContraindication.csv' ]
     errData = []
 
     # init, dep inject openned mongo db
@@ -29,20 +31,30 @@ class ErrorDB
         return new ErrorDB(m)
 
     getError: (onData) ->
-        readCSV drugfile, onData
+        i = 0
+        onReadFile =  ->
+            if i < drugfiles.length - 1
+                i += 1
+                readCSV drugfiles[i], onReadFile
+            else
+                onData?(errData)
 
-    readCSV = (filename, onData) ->
-        onRow = (row, index) ->
-            errData.push row
-            console.log 'csv row: ', index, row
+        readCSV drugfiles[i], onReadFile
+
+    readCSV = (filename, onReadDone) ->
+        onRecord = (row, index) ->
+            if index > 0
+                console.log 'csv row :', row[1]
+                errtxt = row[1].substring(0, row[1].indexOf('['))
+                errData.push errtxt
 
         onEnd = (lines) ->
             console.log 'total lines: ', lines
-            onData?(errData)
+            onReadDone?()
 
         console.log 'readCsv ', filename
         csv().from.stream(fs.createReadStream(filename))
-             .on('record', onRow)
+             .on('record', onRecord)
              .on('end', onEnd)
 
 exports.ErrorDB = ErrorDB
