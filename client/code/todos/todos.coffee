@@ -116,26 +116,34 @@ handleSearchSubmit = ->
        console.log 'check prescription result: ', result
        setCheckResult result
 
-setCheckResult = (err) ->
+setCheckResult = (errjson) ->
     # get check error result back, display it on the screen
     itemcontainer = document.createElement("div")
     itemcontainer.id = "error"
     
-    errors = err.slice()        # make a copy
-    if errors.length > 10
-        errors.pop()
+    console.log 'setCheckResult :', errjson
+    listitems = []
 
-    console.log 'setCheckResult :', errors
-    appendItems('errortext', errors)
+    for e of errjson
+        console.log e, errjson[e]
+        listitems = listitems.concat(appendItems(e, errjson[e]))
 
-appendItems = (id, items) ->
+    styleErrorText listitems
+
+appendItems = (category, items) ->
     #$("#notes").hide()
     listitems = []
+    listitems.push '<li>' + category
+    listitems.push '<ul>'
     for item in items
         listitems.push '<li>' + item + '</li>'
+    listitems.push '</ul></li>'
+    console.log 'appendItem : ', listitems
+    return listitems
 
-    listitems.push '<li>' + ' Please be careful ! ' + '</li>'
+    #listitems.push '<li>' + ' Please be careful ! ' + '</li>'
 
+styleErrorText = (listitems) ->
     $("#errortext").css({display: "inline-block"})
     $("#errorlist").empty()
     $("#errorlist").append(listitems.join(''))

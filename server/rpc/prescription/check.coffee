@@ -39,5 +39,6 @@ exports.actions = (req, res, ss) ->
     sock = req.socketId
     errorDB.getError (err) =>
       #res ["error", "warning", "efefe", "eiofe ", "ce fefe"]
+      console.log 'get error:', err
       res err
   
