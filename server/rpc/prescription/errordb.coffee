@@ -10,17 +10,11 @@ fs = require 'fs'
 path = require 'path'
 #_ = require 'underscore'
 
-# if js, no coffee class, obj = require('./file.js').init(m). <-- init factory return closure obj
-# exports.init = function(M) { sect = 0; return {foo: function(){}, bar: function(){} } }
-
 class ErrorDB
-    # class private static variable refed by name directly
+    # class private static variable sits at top level in scope chain.
     M = undefined
     errFileDir = __dirname + '/../../../data/'
     drugfiles = []
-    # drugfiles = [ __dirname + '/../../../data/DrugIsTakenWithContraindication.csv', 
-    #             __dirname + '/../../../data/PatientHasDiseaselimitation.csv',
-    #             __dirname + '/../../../data/PatientHasContraindication.csv' ]
     errData = {}
 
     # init, dep inject openned mongo db
@@ -33,6 +27,7 @@ class ErrorDB
     @create: (m) ->
         return new ErrorDB(m)
 
+    # main entrance called from check module.
     getError: (onData) ->
         # callback carry the file idx, instead of store index global var.
         onReadFile = (idx, resultjson) ->
@@ -41,8 +36,9 @@ class ErrorDB
             for e of resultjson
                 errData[e] = resultjson[e]
 
-            # if still more files under data folder to be read
+            # if still more files under data folder to be read, 
             if idx < drugfiles.length - 1
+                # static scoped and resolve to the highest scope chain
                 readCSV drugfiles[idx+1], idx+1, onReadFile
             else
                 onData?(errData)
@@ -51,21 +47,23 @@ class ErrorDB
 
     readCSV = (filename, idx, onReadDone) ->
         regexp = /[A-Z][a-z]+/g
+        csvresult = {}
         errors = []
         errfilename = filename.match(regexp).join(' ')
         console.log 'readCsv ', filename
 
+        # callback for each row
         onRecord = (row, index) ->
-            if index > 0
-                console.log 'csv row :', row[1]
-                errtxt = row[1].substring(0, row[1].indexOf('['))
-                errors.push errtxt
-                # errData.push errtxt
+            if index is 0   # do not read col header
+                return
+            
+            errtxt = row[1].substring(0, row[1].indexOf('['))
+            errsub = row[2].substring(0, row[2].indexOf('['))
+            errobj = row[3].substring(0, row[3].indexOf('['))
+            errors.push errtxt + ' ==> ' + errsub + ' conflict with ' + errobj
 
         onEnd = (lines) ->
-            csvresult = {}
             csvresult[errfilename] = errors
-            console.log 'err :', errfilename, errors, csvresult
             onReadDone?(idx, csvresult)
 
         csv().from.stream(fs.createReadStream(errFileDir + filename))
