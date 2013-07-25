@@ -52,6 +52,12 @@ todoCtrlImpl =
 
 Todos.todosController = Em.ArrayController.create todoCtrlImpl
     
+# for error list returned from web service, bind to error controller.
+errorCtrlImpl = 
+    content : []
+
+# controller wraps collection from web service and view it with {{#each}} helper.
+Todos.errorController = Em.ArrayController.create errorCtrlImpl
 
 #view created by extend View object. Template refer to the view. 
 # {{ #view Todos.StatsView id='stats'}}
@@ -133,10 +139,13 @@ setCheckResult = (errjson) ->
 appendItems = (category, items) ->
     #$("#notes").hide()
     listitems = []
-    listitems.push '<li>' + category
+    listitems.push '<li class=rederror>' + category
     listitems.push '<ul>'
-    for item in items
-        listitems.push '<li>' + item + '</li>'
+    for item, idx in items
+        if not (idx % 2)
+            listitems.push '<li>' + item + '</li>'
+        else
+            listitems.push '<li class=rederror>' + item + '</li>'
     listitems.push '</ul></li>'
     console.log 'appendItem : ', listitems
     return listitems
@@ -147,7 +156,7 @@ styleErrorText = (listitems) ->
     $("#errortext").css({display: "inline-block"})
     $("#errorlist").empty()
     $("#errorlist").append(listitems.join(''))
-    $("#errorlist").css({color: "red"})
+    #$("#errorlist").css({color: "red"})
     
 
 ##--------------------------------

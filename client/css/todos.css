@@ -213,7 +213,7 @@ body .errors {
   padding:5px;
   text-align: left;
   /*border: 1px solid;*/
-  color: red;
+  /*color: red;*/
   /*visibility: hidden;*/
   display: none;
   overflow: auto;
@@ -224,6 +224,11 @@ body #errorlist li {
   padding: 5px;
   font-size: 15px;
   font-weight: bold;
+  color: blue;
+}
+
+body #errorlist .rederror {
+  list-style: lower-greek;
   color: red;
 }
 

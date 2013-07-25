@@ -60,7 +60,9 @@ class ErrorDB
             errtxt = row[1].substring(0, row[1].indexOf('['))
             errsub = row[2].substring(0, row[2].indexOf('['))
             errobj = row[3].substring(0, row[3].indexOf('['))
-            errors.push errtxt + ' ==> ' + errsub + ' conflict with ' + errobj
+            #errors.push errtxt + ' ==> ' + errsub + ' conflict with ' + errobj
+            errors.push errtxt 
+            errors.push errsub + ' conflict with ' + errobj
 
         onEnd = (lines) ->
             csvresult[errfilename] = errors
