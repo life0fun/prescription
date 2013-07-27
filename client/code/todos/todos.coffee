@@ -8,11 +8,23 @@ window.errors = []      # all errors from server stored here
 #
 # first, render handlerbar template
 #
-window.Todos = Todos = Ember.Application.create
-    ready: ->
-        console.log 'App created and ready...'
+window.Todos = Todos = Ember.Application.create {}
+    # LOG_TRANSITIONS: true
+    # ready: ->
+    #     console.log 'App created and ready...'
 
 
+# now add route in order to show each template controller.
+console.log "router..", Todos.Router
+Todos.Router.map -> 
+    this.resource "index"
+    this.route "check", {path: "/check"}
+    this
+
+Todos.PrescriptionRoute = Ember.Route.extend 
+  setupController: (controller) ->
+    controller.set('title', "My App");
+  
 # item object, view can refer here thru view.content.title
 Todos.Todo = Em.Object.extend(
     title: null,
@@ -33,11 +45,11 @@ todoCtrlImpl =
         this.filterProperty('isDone', true).forEach(this.removeObject, this)
 
     # http://stackoverflow.com/questions/12777782/ember-computed-properties-in-coffeescript
-    remaining: ( ->
-        console.log 'remaining: ', this.filterProperty('isDone', false)
-        this.filterProperty('isDone', false).get('length')
-    ).property('@each.isDone')
-    
+    # remaining: ( ->
+    #     # console.log 'remaining: ', this.filterProperty('isDone', false)
+    #     this.filterProperty('isDone', false).get('length')
+    # ).property('@each.isDone')
+
     allAreDone: ( (key, value) ->
         if value isnt undefined
             this.setEach('isDone', value)
@@ -50,11 +62,29 @@ todoCtrlImpl =
     getObjects : ->
         p.title for p in this.content when p.isDone isnt true
 
-Todos.todosController = Em.ArrayController.create todoCtrlImpl
+#Todos.todosController = Em.ArrayController.create todoCtrlImpl
+Todos.TodosController = Ember.ArrayController.extend todoCtrlImpl
+Todos.todosController = Todos.TodosController.create()
     
+#
+#  error controller
+#
+Todos.Error = Em.Object.extend(
+    category: null,
+    text: null
+    reason: null
+)
+
 # for error list returned from web service, bind to error controller.
 errorCtrlImpl = 
     content : []
+
+    createError: (cat, txt) ->
+        error = Todos.Error.create {category: cat, text: txt}
+        this.pushObject error
+
+    #getObjects : ->
+    #   e.cat for e in this.content
 
 # controller wraps collection from web service and view it with {{#each}} helper.
 Todos.errorController = Em.ArrayController.create errorCtrlImpl
@@ -129,12 +159,14 @@ setCheckResult = (errjson) ->
     
     console.log 'setCheckResult :', errjson
     listitems = []
-
+    
     for e of errjson
         console.log e, errjson[e]
         listitems = listitems.concat(appendItems(e, errjson[e]))
-
+        Todos.errorController.createError e, errjson[e]
+    
     styleErrorText listitems
+    #Todos.errorController.set 'content', errs  # set ctrller's content property
 
 appendItems = (category, items) ->
     #$("#notes").hide()
@@ -156,6 +188,8 @@ styleErrorText = (listitems) ->
     $("#errortext").css({display: "inline-block"})
     $("#errorlist").empty()
     $("#errorlist").append(listitems.join(''))
+    # enable errorctl
+    $("#errorctrl").css({display: "inline-block"})
     #$("#errorlist").css({color: "red"})
     
 

@@ -232,6 +232,19 @@ body #errorlist .rederror {
   color: red;
 }
 
+body #errorctrl li {
+  margin-left: 40px;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  color: blue;
+}
+
+body #errorctrl .rederror {
+  list-style: lower-greek;
+  color: red;
+}
+
 .ember-view {
   position: relative;
   overflow: visible;

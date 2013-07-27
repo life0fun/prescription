@@ -66,7 +66,7 @@
     </div>
 
     <div id="patient-info" class="patientinfo">
-      <script type="text/x-handlebars">
+      <script type="text/x-handlebars" id="index">
         <div id="Patient span5">
           <br><br><br>
           <p> Patient
@@ -104,25 +104,41 @@
             valueBinding="Todos.todosController.allAreDone"}}
 
           <ul>
-            {{#each Todos.todosController}}
+            {{#each todo in Todos.todosController}}
               <li {{bindAttr class="isDone"}}>
                 {{view Ember.Checkbox titleBinding="title" valueBinding="isDone"}}
               </li>
             {{/each}}
           </ul>
         </div>
+        {{outlet}}
       </script>
       
-      <div id="notes" class="notes">
-        <strong>Notes</strong> &emsp;&thinsp;
-        <textarea rows="5" margin-left:5em></textarea>
-      </div>
+      <!-- subscription notes -->
+      <script type="text/x-handlebars" id="template-notes">
+        <div id="notes" class="notes">
+          <strong>Notes</strong> &emsp;&thinsp;
+          <textarea rows="5" margin-left:5em></textarea>
+        </div>
+      </script>
       
+      <!-- erro text div -->
       <div id="errortext" class="errors">
         <strong>Errors</strong> &emsp;&thinsp;
         <ul id="errorlist">
         </ul>
-        <!-- <textarea id="errortext" rows="3"></textarea> -->
+      </div>
+
+      <div id="errorctrl" class="errors">
+          <script type="text/x-handlebars" id="errctrltext">
+            <ul>
+            {{#each cat in Todos.errorController}}
+              <li>
+                {{category}}
+              </li>
+            {{/each}}
+            <ul>
+          </script>
       </div>
 
       <div class="checkprescription">
