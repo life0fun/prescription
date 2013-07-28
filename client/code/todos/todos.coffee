@@ -8,22 +8,21 @@ window.errors = []      # all errors from server stored here
 #
 # first, render handlerbar template
 #
-window.Todos = Todos = Ember.Application.create {}
-    # LOG_TRANSITIONS: true
-    # ready: ->
-    #     console.log 'App created and ready...'
+window.Todos = Todos = Ember.Application.create
+    LOG_TRANSITIONS: true
+    ready: ->
+        console.log 'App created and ready...'
 
 
 # now add route in order to show each template controller.
-console.log "router..", Todos.Router
-Todos.Router.map -> 
-    this.resource "index"
-    this.route "check", {path: "/check"}
-    this
-
-Todos.PrescriptionRoute = Ember.Route.extend 
-  setupController: (controller) ->
-    controller.set('title', "My App");
+# Router is only support in Ember-1.0.0-master.
+# Todos.Router.map -> 
+#     this.resource "index"
+#     this.route "check", {path: "/check"}
+#     this
+# Todos.PrescriptionRoute = Ember.Route.extend 
+#   setupController: (controller) ->
+#     controller.set('title', "My App");
   
 # item object, view can refer here thru view.content.title
 Todos.Todo = Em.Object.extend(
@@ -33,22 +32,23 @@ Todos.Todo = Em.Object.extend(
 
 # controller ArrayAdapter get items of content [] model
 # {{#each Todos.todosController}} or {{#collection contentBinding='Todos.todosController' }}
-todoCtrlImpl = 
+todosCtrlImpl = 
     content : []
 
     createTodo: (title) ->
         todo = Todos.Todo.create {title: title}
         this.pushObject todo
+        console.log "todoCtrlImpl : createTodo", todo
         console.log 'insert prescription line: ' + title + ' size: ' + this.content.length
 
     clearCompletedTodos: ->
         this.filterProperty('isDone', true).forEach(this.removeObject, this)
 
     # http://stackoverflow.com/questions/12777782/ember-computed-properties-in-coffeescript
-    # remaining: ( ->
-    #     # console.log 'remaining: ', this.filterProperty('isDone', false)
-    #     this.filterProperty('isDone', false).get('length')
-    # ).property('@each.isDone')
+    remaining: ( ->
+        # console.log 'remaining: ', this.filterProperty('isDone', false)
+        this.filterProperty('isDone', false).get('length')
+    ).property('@each.isDone')
 
     allAreDone: ( (key, value) ->
         if value isnt undefined
@@ -62,32 +62,38 @@ todoCtrlImpl =
     getObjects : ->
         p.title for p in this.content when p.isDone isnt true
 
+# compatible with ember-1.0.0
 #Todos.todosController = Em.ArrayController.create todoCtrlImpl
-Todos.TodosController = Ember.ArrayController.extend todoCtrlImpl
+Todos.TodosController = Ember.ArrayController.extend todosCtrlImpl
 Todos.todosController = Todos.TodosController.create()
-    
-#
-#  error controller
-#
+
+#  error model, encapsulate error text and other properties.
 Todos.Error = Em.Object.extend(
-    category: null,
-    text: null
-    reason: null
+    errtype: null,
+    errlist: []
 )
 
-# for error list returned from web service, bind to error controller.
-errorCtrlImpl = 
-    content : []
+# repr error model with object controller, so router can set up MVC for the route
+# to display model from this object controller to template. Only available since 1.0.0
+# Todos.errorController = Ember.ObjectController.extend
+#     getCat: ->
+#         return this.errtype
 
-    createError: (cat, txt) ->
-        error = Todos.Error.create {category: cat, text: txt}
+# for error list returned from web service, bind to error controller.
+errorsCtrlImpl = 
+    content : []
+    itemController: 'error'
+
+    createError: (errtype, errlist) ->
+        error = Todos.Error.create {errtype: errtype, errlist: errlist}
         this.pushObject error
 
-    #getObjects : ->
-    #   e.cat for e in this.content
 
-# controller wraps collection from web service and view it with {{#each}} helper.
-Todos.errorController = Em.ArrayController.create errorCtrlImpl
+# compatible with ember-1.0.0
+#Todos.errorController = Em.ArrayController.create errorCtrlImpl  
+Todos.ErrorsController = Ember.ArrayController.extend errorsCtrlImpl
+Todos.errorsController = Todos.ErrorsController.create()
+
 
 #view created by extend View object. Template refer to the view. 
 # {{ #view Todos.StatsView id='stats'}}
@@ -111,7 +117,6 @@ createTodoViewImpl =
             Todos.todosController.createTodo value
             this.set 'value', ''
 
-# {{ view Todos.CreateTodoView id='new-todo' placeholder='what to do'}}
 Todos.CreateTodoView = Em.TextField.extend createTodoViewImpl
 
 
@@ -152,6 +157,8 @@ handleSearchSubmit = ->
        console.log 'check prescription result: ', result
        setCheckResult result
 
+# errjson in the following format:
+# {err-type-1: [note1, err1, note2, err2, ...], err-type-2: [note1, err1, note2, err2]}
 setCheckResult = (errjson) ->
     # get check error result back, display it on the screen
     itemcontainer = document.createElement("div")
@@ -163,11 +170,13 @@ setCheckResult = (errjson) ->
     for e of errjson
         console.log e, errjson[e]
         listitems = listitems.concat(appendItems(e, errjson[e]))
-        Todos.errorController.createError e, errjson[e]
+        # populate error array controller
+        Todos.errorsController.createError e, errjson[e]
     
     styleErrorText listitems
-    #Todos.errorController.set 'content', errs  # set ctrller's content property
+    # Todos.errorController.set 'content', errs  # set ctrller's content property
 
+# pass in 
 appendItems = (category, items) ->
     #$("#notes").hide()
     listitems = []
@@ -188,7 +197,7 @@ styleErrorText = (listitems) ->
     $("#errortext").css({display: "inline-block"})
     $("#errorlist").empty()
     $("#errorlist").append(listitems.join(''))
-    # enable errorctl
+    # error ctrl display set to none at first, enable to show it.
     $("#errorctrl").css({display: "inline-block"})
     #$("#errorlist").css({color: "red"})
     

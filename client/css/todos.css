@@ -208,7 +208,7 @@ body .errors {
   clear: left;
   margin-left: 20px;
   margin-top: 20px;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bold; 
   padding:5px;
   text-align: left;
@@ -233,6 +233,7 @@ body #errorlist .rederror {
 }
 
 body #errorctrl li {
+  list-style: lower-greek;
   margin-left: 40px;
   padding: 5px;
   font-size: 15px;
@@ -241,7 +242,7 @@ body #errorctrl li {
 }
 
 body #errorctrl .rederror {
-  list-style: lower-greek;
+  /*list-style: lower-greek;*/
   color: red;
 }
 
